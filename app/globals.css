@@ -15,6 +15,34 @@
   --color-ambar-600: #b86e00;
 }
 
+/* Nivel 1: tamaños, radios y tiempos (primitivos) */
+:root {
+  --tamano-base: 0.25rem;
+  --tamano-tactil: 2.75rem; /* 44 px: objetivo táctil mínimo */
+  --tamano-avatar: 6rem;
+  --tamano-borde: 2px;
+  --tamano-trazo: 1px;
+  --tamano-foco: 3px;
+  --tamano-foco-separacion: 3px;
+  --ancho-contenido: 72rem;
+
+  --texto-etiqueta: 0.75rem;
+  --texto-cuerpo: 1rem;
+  --texto-rol: 1.125rem;
+  --texto-frase: clamp(1.25rem, 2.5vw, 1.625rem);
+  --texto-titulo: clamp(2.75rem, 8vw, 5rem);
+  --interletra-etiqueta: 0.08em;
+
+  --radio-boceto: 2px;
+  --radio-control: 0.5rem;
+  --radio-pantalla: 0.75rem;
+  --radio-carcasa: 1.5rem;
+  --radio-redondo: 9999px;
+
+  --duracion-corta: 200ms;
+  --duracion-encendido: 1.2s;
+}
+
 /* Nivel 2: tokens semánticos (tema claro por defecto) */
 :root {
   --color-fondo: var(--color-crema-50);
@@ -24,12 +52,43 @@
   --color-texto-suave: var(--color-grafito-500);
   --color-acento: var(--color-lima-600);
   --color-acento-2: var(--color-ambar-600);
+  --color-sobre-acento: var(--color-grafito-900);
+  --color-foco: var(--color-ambar-600);
 }
 
 /* Nivel 3: tokens de componente */
 :root {
   --consola-pantalla: var(--color-grafito-900);
   --consola-carcasa: var(--color-grafito-800);
+  --consola-borde: var(--color-grafito-500);
+  --consola-etiqueta: var(--color-crema-200);
+  --consola-tenue: var(--color-grafito-100);
+  --consola-trazo: var(--color-crema-200);
+  --consola-led-encendido: var(--color-lima-400);
+  --consola-led-apagado: var(--color-grafito-500);
+  --consola-control: var(--color-grafito-900);
+  --consola-foco: var(--color-ambar-400);
+  --consola-ui-acento: var(--color-lima-400);
+  --consola-ui-acento-2: var(--color-ambar-400);
+  --consola-ui-texto: var(--color-crema-50);
+  --consola-ui-tarjeta: var(--color-grafito-800);
+
+  --consola-espacio: calc(var(--tamano-base) * 4);
+  --consola-relleno: calc(var(--tamano-base) * 5);
+  --consola-relleno-movil: calc(var(--tamano-base) * 3);
+  --consola-led: calc(var(--tamano-base) * 2.5);
+  --consola-pulsado: 1px;
+  --consola-rejilla-ancho: calc(var(--tamano-base) * 16);
+  --consola-rejilla-paso: calc(var(--tamano-base) * 1.5);
+  --consola-cartucho-ancho: calc(var(--tamano-base) * 10);
+  --consola-cartucho-alto: calc(var(--tamano-base) * 5);
+  /* Medidas de la maqueta relativas a la pantalla (container query units) */
+  --consola-maqueta-margen: 6cqh;
+  --consola-maqueta-espacio: 5cqh;
+  --consola-maqueta-barra: 9cqh;
+  --consola-maqueta-linea: 4cqh;
+  --consola-maqueta-boton: 9cqh;
+  --consola-maqueta-tarjeta: 22cqh;
 }
 
 :root[data-theme="dark"] {
@@ -40,6 +99,7 @@
   --color-texto-suave: var(--color-grafito-100);
   --color-acento: var(--color-lima-400);
   --color-acento-2: var(--color-ambar-400);
+  --color-foco: var(--color-ambar-400);
 }
 
 /* Respaldo: preferencia del sistema cuando no hay data-theme explícito */
@@ -52,6 +112,7 @@
     --color-texto-suave: var(--color-grafito-100);
     --color-acento: var(--color-lima-400);
     --color-acento-2: var(--color-ambar-400);
+    --color-foco: var(--color-ambar-400);
   }
 }
 
@@ -63,6 +124,20 @@
   --color-texto-suave: var(--color-texto-suave);
   --color-acento: var(--color-acento);
   --color-acento-2: var(--color-acento-2);
+  --color-sobre-acento: var(--color-sobre-acento);
+  --spacing: var(--tamano-base);
+  --spacing-tactil: var(--tamano-tactil);
+  --spacing-avatar: var(--tamano-avatar);
+  --container-contenido: var(--ancho-contenido);
+  --text-etiqueta: var(--texto-etiqueta);
+  --text-cuerpo: var(--texto-cuerpo);
+  --text-rol: var(--texto-rol);
+  --text-frase: var(--texto-frase);
+  --text-frase--line-height: 1.3;
+  --text-titulo: var(--texto-titulo);
+  --text-titulo--line-height: 1;
+  --radius-control: var(--radio-control);
+  --radius-redondo: var(--radio-redondo);
   --font-sans: var(--font-space-grotesk);
   --font-mono: var(--font-ibm-plex-mono);
 }
@@ -71,4 +146,9 @@ body {
   background: var(--color-fondo);
   color: var(--color-texto);
   font-family: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+:focus-visible {
+  outline: var(--tamano-foco) solid var(--color-foco);
+  outline-offset: var(--tamano-foco-separacion);
 }
