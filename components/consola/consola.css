@@ -1,0 +1,405 @@
+/* Consola Boceta: solo usa tokens de app/globals.css.
+   Animaciones únicamente con transform y opacity. */
+
+.consola {
+  display: flex;
+  flex-direction: column;
+  gap: var(--consola-espacio);
+  padding: var(--consola-relleno);
+  background: var(--consola-carcasa);
+  border: var(--tamano-borde) solid var(--consola-borde);
+  border-radius: var(--radio-carcasa);
+  color: var(--consola-etiqueta);
+  font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  font-size: var(--texto-etiqueta);
+  letter-spacing: var(--interletra-etiqueta);
+  text-transform: uppercase;
+}
+
+/* Cabecera */
+.consola__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--consola-espacio);
+}
+
+.consola__marca {
+  font-weight: 500;
+  color: var(--consola-ui-acento);
+}
+
+.consola__rejilla {
+  flex: 0 1 var(--consola-rejilla-ancho);
+  height: var(--consola-rejilla-paso);
+  background-image: radial-gradient(
+    circle,
+    var(--consola-borde) 40%,
+    transparent 45%
+  );
+  background-size: var(--consola-rejilla-paso) var(--consola-rejilla-paso);
+}
+
+.consola__power {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tamano-base);
+}
+
+.consola__led {
+  flex: none;
+  width: var(--consola-led);
+  height: var(--consola-led);
+  border-radius: var(--radio-redondo);
+  background: var(--consola-led-apagado);
+}
+
+.consola__led[data-encendido="true"] {
+  background: var(--consola-led-encendido);
+}
+
+/* Pantalla */
+.pantalla__vidrio {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  container-type: size;
+  overflow: hidden;
+  background: var(--consola-pantalla);
+  border: var(--tamano-borde) solid var(--consola-borde);
+  border-radius: var(--radio-pantalla);
+}
+
+.pantalla__apagada {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--consola-tenue);
+}
+
+.pantalla__etiqueta {
+  position: absolute;
+  right: var(--consola-maqueta-margen);
+  bottom: calc(var(--consola-maqueta-margen) / 3);
+  color: var(--consola-tenue);
+}
+
+.pantalla__crt {
+  position: absolute;
+  inset: var(--consola-maqueta-margen);
+  bottom: calc(var(--consola-maqueta-margen) * 2);
+  display: flex;
+  justify-content: center;
+  transform-origin: center;
+  animation: consola-crt var(--duracion-encendido) ease-out both;
+}
+
+.marco {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: consola-aparecer var(--duracion-corta) ease-out both;
+}
+
+.marco--celular {
+  width: auto;
+  aspect-ratio: 9 / 16;
+  border: var(--tamano-borde) solid var(--consola-borde);
+  border-radius: var(--radio-pantalla);
+}
+
+/* Maqueta: misma estructura para boceto y final */
+.maqueta {
+  position: absolute;
+  inset: calc(var(--consola-maqueta-margen) / 2);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--consola-maqueta-espacio);
+}
+
+.maqueta span {
+  display: block;
+  border-radius: var(--radio-boceto);
+}
+
+.maqueta__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--consola-maqueta-barra);
+}
+
+.maqueta__logo {
+  height: 100%;
+  aspect-ratio: 1;
+}
+
+.maqueta__nav {
+  width: 35%;
+  height: 50%;
+}
+
+.maqueta__hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--consola-maqueta-linea);
+}
+
+.maqueta__linea {
+  width: 55%;
+  height: var(--consola-maqueta-linea);
+}
+
+.maqueta__linea--larga {
+  width: 80%;
+  height: calc(var(--consola-maqueta-linea) * 2);
+}
+
+.maqueta__boton {
+  width: 25%;
+  height: var(--consola-maqueta-boton);
+}
+
+.maqueta__tarjetas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--consola-maqueta-linea);
+}
+
+.maqueta__tarjeta {
+  height: var(--consola-maqueta-tarjeta);
+}
+
+.marco--celular .maqueta__tarjetas {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.marco--celular .maqueta__tarjeta:nth-child(n + 2) {
+  display: none;
+}
+
+.marco--celular .maqueta__nav {
+  width: 25%;
+}
+
+.marco--celular .maqueta__linea--larga {
+  width: 100%;
+}
+
+.marco--celular .maqueta__boton {
+  width: 70%;
+}
+
+/* Boceto: solo trazos */
+.maqueta--boceto {
+  opacity: 0;
+  animation: consola-boceto var(--duracion-encendido) linear both;
+}
+
+.maqueta--boceto span {
+  border: var(--tamano-trazo) dashed var(--consola-trazo);
+}
+
+.maqueta--boceto .maqueta__barra {
+  border-bottom: var(--tamano-trazo) dashed var(--consola-trazo);
+}
+
+/* Final: interfaz con color */
+.maqueta--final {
+  animation: consola-final var(--duracion-encendido) ease-out both;
+}
+
+.maqueta--final .maqueta__logo {
+  background: var(--consola-ui-acento);
+}
+
+.maqueta--final .maqueta__nav,
+.maqueta--final .maqueta__linea {
+  background: var(--consola-tenue);
+}
+
+.maqueta--final .maqueta__linea--larga {
+  background: var(--consola-ui-texto);
+}
+
+.maqueta--final .maqueta__boton {
+  background: var(--consola-ui-acento-2);
+}
+
+.maqueta--final .maqueta__tarjeta {
+  background: var(--consola-ui-tarjeta);
+  border: var(--tamano-trazo) solid var(--consola-borde);
+}
+
+/* Controles */
+.controles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(var(--consola-espacio) / 2);
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tamano-base);
+  min-height: var(--tamano-tactil);
+  padding: calc(var(--tamano-base) * 2);
+  background: var(--consola-control);
+  color: var(--consola-etiqueta);
+  border: var(--tamano-borde) solid var(--consola-borde);
+  border-radius: var(--radio-control);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: transform var(--duracion-corta) ease-out;
+}
+
+.control:active:not([aria-disabled="true"]) {
+  transform: translateY(var(--consola-pulsado));
+}
+
+.control[aria-pressed="true"] {
+  border-color: var(--consola-led-encendido);
+}
+
+.control[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.control:focus-visible {
+  outline: var(--tamano-foco) solid var(--consola-foco);
+  outline-offset: var(--tamano-foco-separacion);
+}
+
+.control__estado {
+  color: var(--consola-tenue);
+}
+
+.ranura {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: var(--consola-cartucho-ancho);
+  height: var(--consola-cartucho-alto);
+  overflow: hidden;
+  border-bottom: var(--tamano-borde) solid var(--consola-borde);
+}
+
+.cartucho {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radio-boceto) var(--radio-boceto) 0 0;
+  background: var(--consola-ui-acento-2);
+  color: var(--consola-control);
+  font-size: calc(var(--texto-etiqueta) * 0.75);
+  line-height: var(--consola-cartucho-alto);
+  text-align: center;
+  transform: translateY(0);
+  transition: transform var(--duracion-corta) ease-out;
+}
+
+.control[aria-pressed="true"] .cartucho {
+  transform: translateY(60%);
+}
+
+.controles__ayuda {
+  grid-column: 1 / -1;
+  color: var(--consola-tenue);
+  text-align: center;
+  text-transform: none;
+}
+
+/* Móvil (< 768 px = breakpoint md): versión simplificada */
+@media (width < 48rem) {
+  .consola {
+    padding: var(--consola-relleno-movil);
+    border-radius: var(--radio-pantalla);
+  }
+
+  .consola__rejilla,
+  .ranura {
+    display: none;
+  }
+
+  .controles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .control {
+    flex-direction: row;
+    justify-content: space-between;
+    padding-inline: var(--consola-espacio);
+    font-size: var(--texto-cuerpo);
+  }
+
+  .control__estado {
+    margin-inline-start: auto;
+  }
+
+  .controles__ayuda {
+    font-size: var(--texto-etiqueta);
+  }
+}
+
+@keyframes consola-crt {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.02);
+  }
+  10% {
+    opacity: 1;
+    transform: scaleY(0.02);
+  }
+  22%,
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes consola-boceto {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  85%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes consola-final {
+  0%,
+  50% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes consola-aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Sin animaciones: se muestra directamente la interfaz final */
+@media (prefers-reduced-motion: reduce) {
+  .consola *,
+  .consola *::before,
+  .consola *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
