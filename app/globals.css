@@ -20,6 +20,7 @@
   --tamano-base: 0.25rem;
   --tamano-tactil: 2.75rem; /* 44 px: objetivo táctil mínimo */
   --tamano-avatar: 6rem;
+  --navbar-alto: calc(var(--tamano-tactil) + var(--tamano-base) * 4);
   --tamano-borde: 2px;
   --tamano-trazo: 1px;
   --tamano-foco: 3px;
@@ -128,6 +129,7 @@
   --spacing: var(--tamano-base);
   --spacing-tactil: var(--tamano-tactil);
   --spacing-avatar: var(--tamano-avatar);
+  --spacing-navbar: var(--navbar-alto);
   --container-contenido: var(--ancho-contenido);
   --text-etiqueta: var(--texto-etiqueta);
   --text-cuerpo: var(--texto-cuerpo);
@@ -146,6 +148,21 @@ body {
   background: var(--color-fondo);
   color: var(--color-texto);
   font-family: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Compensa el navbar sticky para que el título de cada sección quede visible */
+section[id] {
+  scroll-margin-top: var(--navbar-alto);
 }
 
 :focus-visible {
