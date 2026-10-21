@@ -20,7 +20,6 @@
   --color-azul-600: #2a5da8;
   --color-coral-400: #ff9f7a;
   --color-coral-600: #c4532d;
-  --color-sombra: rgb(23 25 26 / 0.45); /* grafito-900 al 45 % */
 }
 
 /* Nivel 1: tamaños, radios y tiempos (primitivos) */
@@ -99,14 +98,12 @@
   --consola-relleno: calc(var(--tamano-base) * 5);
   --consola-relleno-movil: calc(var(--tamano-base) * 3);
   --consola-led: calc(var(--tamano-base) * 2.5);
-  --consola-pulsado: 1px;
+  --consola-pulsado: calc(var(--tamano-trazo) * 2);
   --consola-rejilla-ancho: calc(var(--tamano-base) * 16);
   --consola-rejilla-paso: calc(var(--tamano-base) * 1.5);
   --consola-ancho: 50rem;
   --consola-relleno-lateral: calc(var(--tamano-base) * 4);
   --consola-columna-espacio: calc(var(--tamano-base) * 3);
-  --consola-sombra: 0 calc(var(--tamano-base) * 6) calc(var(--tamano-base) * 12)
-    calc(var(--tamano-base) * -4) var(--color-sombra);
   --consola-tornillo: var(--color-grafito-500);
   --consola-tornillo-tamano: calc(var(--tamano-base) * 3);
   --consola-tornillo-margen: calc(var(--tamano-base) * 2.5);
@@ -124,6 +121,106 @@
   --consola-inactivo: 0.5;
   --consola-cuadricula: var(--color-grafito-800);
   --consola-cuadricula-paso: calc(var(--tamano-base) * 4);
+
+  /* Materiales de la consola: el objeto no cambia con el tema.
+     Las capas translúcidas usan colores opacos de la paleta + opacity. */
+  --consola-serigrafia: var(--color-crema-200);
+  --consola-microtexto: calc(var(--texto-etiqueta) * 0.85);
+  --consola-plastico: linear-gradient(
+    150deg,
+    var(--color-grafito-500) -55%,
+    var(--color-grafito-800) 35%,
+    var(--color-grafito-900) 140%
+  );
+  --consola-bisel-luz: var(--color-grafito-500);
+  --consola-bisel-sombra: var(--color-grafito-900);
+  --consola-canto: calc(var(--tamano-base) * 1.5);
+  --consola-volumen:
+    inset 0 var(--tamano-trazo) 0 var(--consola-bisel-luz),
+    inset 0 calc(var(--tamano-trazo) * -2) 0 var(--consola-bisel-sombra),
+    0 var(--consola-canto) 0 var(--consola-bisel-sombra);
+  --consola-pantalla-bisel: var(--color-grafito-900);
+  --consola-pantalla-bisel-ancho: calc(var(--tamano-base) * 2);
+  --consola-pantalla-hundido:
+    0 calc(var(--tamano-trazo) * -1) 0 var(--color-grafito-900),
+    0 var(--tamano-trazo) 0 var(--consola-bisel-luz);
+  --consola-vidrio-reflejo: linear-gradient(
+    125deg,
+    transparent 20%,
+    var(--color-crema-50) 38%,
+    transparent 55%
+  );
+  --consola-vidrio-reflejo-opacidad: 0.07;
+  --consola-escaneo: repeating-linear-gradient(
+    to bottom,
+    var(--color-grafito-900) 0 var(--tamano-trazo),
+    transparent var(--tamano-trazo) calc(var(--tamano-trazo) * 3)
+  );
+  --consola-escaneo-opacidad: 0.35;
+  --consola-calentamiento-luz: radial-gradient(
+    ellipse at center,
+    var(--color-crema-50),
+    var(--color-grafito-500) 55%,
+    transparent 80%
+  );
+  --consola-tecla-cara: linear-gradient(
+    180deg,
+    var(--color-grafito-800),
+    var(--color-grafito-900)
+  );
+  --consola-tecla-luz: inset 0 var(--tamano-trazo) 0 var(--color-grafito-500);
+  --consola-tecla-elevacion:
+    0 var(--consola-pulsado) 0 var(--color-grafito-900),
+    0 calc(var(--consola-pulsado) * 2) var(--tamano-base) var(--color-grafito-900);
+  --consola-tecla-pulsada:
+    inset 0 var(--tamano-trazo) var(--tamano-base) var(--color-grafito-900),
+    inset 0 0 0 var(--tamano-trazo) var(--color-grafito-900);
+  --consola-led-brillo: radial-gradient(
+    closest-side,
+    var(--color-lima-400),
+    transparent
+  );
+  --consola-led-halo: calc(var(--consola-led) * -0.9);
+  --consola-ranura-fondo: linear-gradient(
+    180deg,
+    var(--color-grafito-900) 45%,
+    var(--color-grafito-800)
+  );
+  --consola-ranura-reflejo: var(--color-grafito-500);
+  --consola-ranura-labio:
+    0 calc(var(--tamano-trazo) * -1) 0 var(--color-grafito-900),
+    0 var(--tamano-trazo) 0 var(--consola-ranura-reflejo);
+  --consola-cartucho-plastico: linear-gradient(
+    180deg,
+    var(--color-ambar-400),
+    var(--color-ambar-600) 160%
+  );
+  --consola-cartucho-sombra: 0 var(--tamano-base) calc(var(--tamano-base) * 2)
+    var(--color-grafito-900);
+  --consola-tornillo-brillo: radial-gradient(
+    circle at 35% 30%,
+    var(--color-grafito-100),
+    var(--color-grafito-500) 55%,
+    var(--color-grafito-800)
+  );
+  --consola-tornillo-ranura: var(--color-grafito-900);
+  --consola-rejilla-agujero: var(--color-grafito-900);
+  --consola-rejilla-relieve: var(--color-grafito-500);
+  --consola-perilla-sombra: 0 var(--tamano-base) var(--tamano-base) var(--color-grafito-900);
+  --consola-apoyo: radial-gradient(closest-side, var(--color-grafito-900), transparent);
+  --consola-apoyo-alto: calc(var(--tamano-base) * 8);
+  --consola-apoyo-bajada: calc(var(--tamano-base) * -5);
+  --consola-apoyo-margen: 6%;
+
+  /* Luz ambiente (sí depende del tema): sombra proyectada y contorno */
+  --consola-apoyo-opacidad: 0.35;
+  --consola-contorno: var(--color-grafito-900);
+
+  /* Movimiento */
+  --consola-flotacion: calc(var(--tamano-trazo) * 2);
+  --consola-flotacion-duracion: 6s;
+  --consola-led-respiracion: 3s;
+  --consola-calentamiento: 280ms;
   /* Medidas de la maqueta relativas a la pantalla (container query units) */
   --consola-maqueta-margen: 6cqh;
   --consola-maqueta-espacio: 5cqh;
@@ -144,6 +241,8 @@
   --color-acento-2: var(--color-ambar-400);
   --color-foco: var(--color-ambar-400);
   --color-error: var(--color-rojo-400);
+  --consola-apoyo-opacidad: 0.85;
+  --consola-contorno: var(--color-grafito-500);
   --cartucho-escritorio: var(--color-lima-400);
   --cartucho-celular: var(--color-ambar-400);
   --cartucho-reloj: var(--color-azul-400);
