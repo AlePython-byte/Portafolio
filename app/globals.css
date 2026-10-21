@@ -27,6 +27,7 @@
   --tamano-foco: 3px;
   --tamano-foco-separacion: 3px;
   --ancho-contenido: 72rem;
+  --ancho-contenido-amplio: 90rem;
 
   --texto-etiqueta: 0.75rem;
   --texto-cuerpo: 1rem;
@@ -121,6 +122,7 @@
   --spacing-foto: var(--tamano-foto);
   --spacing-navbar: var(--navbar-alto);
   --container-contenido: var(--ancho-contenido);
+  --container-contenido-amplio: var(--ancho-contenido-amplio);
   --text-etiqueta: var(--texto-etiqueta);
   --text-cuerpo: var(--texto-cuerpo);
   --text-rol: var(--texto-rol);

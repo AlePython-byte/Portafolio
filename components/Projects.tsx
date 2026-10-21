@@ -15,13 +15,13 @@ export default function Projects() {
     <section
       id="projects"
       aria-labelledby="projects-titulo"
-      className="mx-auto w-full max-w-contenido px-6 py-16 md:py-24"
+      className="mx-auto w-full max-w-contenido px-6 py-16 md:py-24 2xl:max-w-contenido-amplio"
     >
       <SeccionTitulo id="projects-titulo" titulo={t(projectsCopy.title)} />
 
       <div className="mt-10 flex flex-col gap-6">
         <h3 className="text-cuerpo font-bold">{t(projectsCopy.courseHeading)}</h3>
-        <ul className="grid gap-6 md:grid-cols-2">
+        <ul className="grid gap-6 md:grid-cols-2 2xl:grid-cols-4">
           {featured.map((project) => (
             <li key={project.id}>
               <ProjectCard project={project} />
@@ -32,7 +32,7 @@ export default function Projects() {
 
       <div className="mt-12 flex flex-col gap-6">
         <h3 className="text-cuerpo font-bold">{t(projectsCopy.moreHeading)}</h3>
-        <ul className="grid gap-6 lg:grid-cols-3">
+        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {more.map((project) => (
             <li key={project.id}>
               <ProjectCard project={project} />
