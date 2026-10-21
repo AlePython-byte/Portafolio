@@ -11,6 +11,8 @@
   --color-grafito-900: #17191a;
   --color-lima-400: #a6e22e;
   --color-lima-600: #6b9a12;
+  --color-rojo-400: #ff8a78;
+  --color-rojo-600: #a8321f;
   --color-ambar-400: #ffb938;
   --color-ambar-600: #b86e00;
 }
@@ -58,6 +60,7 @@
   --color-acento-2: var(--color-ambar-600);
   --color-sobre-acento: var(--color-grafito-900);
   --color-foco: var(--color-ambar-600);
+  --color-error: var(--color-rojo-600);
 }
 
 /* Nivel 3: tokens de componente */
@@ -105,6 +108,7 @@
   --color-acento: var(--color-lima-400);
   --color-acento-2: var(--color-ambar-400);
   --color-foco: var(--color-ambar-400);
+  --color-error: var(--color-rojo-400);
 }
 
 @theme inline {
@@ -116,7 +120,8 @@
   --color-acento: var(--color-acento);
   --color-acento-2: var(--color-acento-2);
   --color-sobre-acento: var(--color-sobre-acento);
-  --spacing: var(--tamano-base);
+  --color-error: var(--color-error);
+  --spacing:var(--tamano-base);
   --spacing-tactil: var(--tamano-tactil);
   --spacing-avatar: var(--tamano-avatar);
   --spacing-foto: var(--tamano-foto);
