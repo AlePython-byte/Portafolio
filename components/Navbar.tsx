@@ -39,7 +39,7 @@ export default function Navbar() {
       if (event.key === "Escape") closeMenu();
     };
     // Si la ventana pasa a escritorio, el panel deja de ser un menú desplegable.
-    const desktop = window.matchMedia("(min-width: 48rem)");
+    const desktop = window.matchMedia("(min-width: 64rem)");
     const onChange = (event: MediaQueryListEvent) => {
       if (event.matches) setOpen(false);
     };
@@ -88,7 +88,7 @@ export default function Navbar() {
             aria-controls={MENU_ID}
             aria-label={open ? t.menuClose : t.menuOpen}
             onClick={() => setOpen((v) => !v)}
-            className={`${controlClass} md:hidden`}
+            className={`${controlClass} lg:hidden`}
           >
             <svg
               width="24"
@@ -112,9 +112,9 @@ export default function Navbar() {
             id={MENU_ID}
             className={`${
               open ? "flex" : "hidden"
-            } absolute inset-x-0 top-full flex-col gap-4 border-b border-borde bg-superficie px-6 py-4 md:static md:flex md:flex-1 md:flex-row md:items-center md:justify-between md:border-b-0 md:bg-transparent md:p-0`}
+            } absolute inset-x-0 top-full flex-col gap-4 border-b border-borde bg-superficie px-6 py-4 lg:static lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-between lg:border-b-0 lg:bg-transparent lg:p-0`}
           >
-            <ul className="flex flex-col md:ml-6 md:flex-row md:gap-1">
+            <ul className="flex flex-col lg:ml-6 lg:flex-row lg:gap-1">
               {NAV_SECTIONS.map((id) => (
                 <li key={id}>
                   <a href={`#${id}`} onClick={onLinkClick} className={linkClass}>

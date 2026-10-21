@@ -58,7 +58,7 @@ export const translations: Record<Lang, Dictionary> = {
     themeState: { light: "Theme: light", dark: "Theme: dark" },
     langLabel: "Language",
     nav: {
-      about: "About",
+      about: "About me",
       projects: "Projects",
       testimonials: "Testimonials",
       experience: "Experience",
