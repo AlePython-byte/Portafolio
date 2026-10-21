@@ -1,25 +1,54 @@
 /* Consola Boceta: solo usa tokens de app/globals.css.
-   Animaciones únicamente con transform y opacity.
+   Animaciones únicamente con transform y opacity (nunca box-shadow ni filter).
    Base: versión simplificada (menos de 1024 px). La carcasa completa
-   (riel, tornillos, cruceta, perilla, teclas) aparece desde 64rem. */
+   (riel, tornillos, cruceta, perilla, teclas) aparece desde 64rem.
+   Animaciones infinitas: flotación de .consola y respiración del LED de PWR. */
 
+/* ---------- Escena: la consola apoyada sobre la superficie ---------- */
+.consola-escena {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: var(--consola-ancho);
+}
+
+/* Sombra de apoyo: no flota con la consola */
+.consola-escena::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-inline: var(--consola-apoyo-margen);
+  bottom: var(--consola-apoyo-bajada);
+  height: var(--consola-apoyo-alto);
+  background: var(--consola-apoyo);
+  opacity: var(--consola-apoyo-opacidad);
+  pointer-events: none;
+}
+
+.consola-escena[data-reposo="pausado"] .consola,
+.consola-escena[data-reposo="pausado"] .consola__led::after {
+  animation-play-state: paused;
+}
+
+/* ---------- Carcasa ---------- */
 .consola {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--consola-espacio);
   width: 100%;
-  max-width: var(--consola-ancho);
   padding: var(--consola-relleno-movil);
-  background: var(--consola-carcasa);
-  border: var(--tamano-borde) solid var(--consola-borde);
+  background: var(--consola-plastico);
+  border: var(--tamano-borde) solid var(--consola-contorno);
   border-radius: var(--radio-pantalla);
-  box-shadow: var(--consola-sombra);
-  color: var(--consola-etiqueta);
+  box-shadow: var(--consola-volumen);
+  color: var(--consola-serigrafia);
   font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
   font-size: var(--texto-etiqueta);
   letter-spacing: var(--interletra-etiqueta);
   text-transform: uppercase;
+  animation: consola-flotar var(--consola-flotacion-duracion) ease-in-out
+    infinite alternate;
 }
 
 /* Piezas que solo existen en la carcasa completa */
@@ -43,7 +72,7 @@
   cursor: not-allowed;
 }
 
-/* Cabecera */
+/* Cabecera y serigrafía */
 .consola__cabecera {
   display: flex;
   align-items: center;
@@ -51,20 +80,33 @@
   gap: var(--consola-espacio);
 }
 
+.consola__serigrafia {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tamano-trazo);
+}
+
 .consola__marca {
   font-weight: 500;
   color: var(--consola-ui-acento);
 }
 
+.consola__micro {
+  font-size: var(--consola-microtexto);
+  color: var(--consola-serigrafia);
+}
+
+/* Rejilla de altavoz con relieve: agujero oscuro + labio de luz debajo */
 .consola__rejilla {
   flex: 0 1 var(--consola-rejilla-ancho);
   height: calc(var(--consola-rejilla-paso) * 3);
-  background-image: radial-gradient(
-    circle,
-    var(--consola-borde) 40%,
-    transparent 45%
-  );
+  background-image:
+    radial-gradient(circle, var(--consola-rejilla-agujero) 40%, transparent 45%),
+    radial-gradient(circle, var(--consola-rejilla-relieve) 40%, transparent 45%);
   background-size: var(--consola-rejilla-paso) var(--consola-rejilla-paso);
+  background-position:
+    0 0,
+    0 var(--tamano-trazo);
 }
 
 .consola__power {
@@ -73,26 +115,48 @@
   gap: var(--tamano-base);
 }
 
+/* LED: brillo en una capa aparte que solo cambia de opacidad */
 .consola__led {
+  position: relative;
   flex: none;
   width: var(--consola-led);
   height: var(--consola-led);
   border-radius: var(--radio-redondo);
   background: var(--consola-led-apagado);
+  box-shadow: var(--consola-tecla-luz);
+}
+
+.consola__led::after {
+  content: "";
+  position: absolute;
+  inset: var(--consola-led-halo);
+  border-radius: var(--radio-redondo);
+  background: var(--consola-led-brillo);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .consola__led[data-encendido="true"] {
   background: var(--consola-led-encendido);
 }
 
-/* Tornillos */
+.consola__led[data-encendido="true"]::after {
+  opacity: 1;
+}
+
+.consola__power .consola__led[data-encendido="true"]::after {
+  animation: consola-respirar var(--consola-led-respiracion) ease-in-out
+    infinite alternate;
+}
+
+/* Tornillos con brillo y ranura */
 .consola__tornillo {
   position: absolute;
   width: var(--consola-tornillo-tamano);
   height: var(--consola-tornillo-tamano);
   border-radius: var(--radio-redondo);
-  background: var(--consola-tornillo);
-  border: var(--tamano-trazo) solid var(--consola-borde);
+  background: var(--consola-tornillo-brillo);
+  box-shadow: var(--consola-pantalla-hundido);
 }
 
 .consola__tornillo::after {
@@ -100,8 +164,8 @@
   position: absolute;
   inset-inline: 20%;
   top: 50%;
-  height: var(--tamano-trazo);
-  background: var(--consola-carcasa);
+  height: var(--tamano-borde);
+  background: var(--consola-tornillo-ranura);
   transform: translateY(-50%) rotate(45deg);
 }
 
@@ -125,7 +189,7 @@
   right: var(--consola-tornillo-margen);
 }
 
-/* Ranura-riel superior con el cartucho Demo asomando */
+/* Ranura-riel superior con profundidad y el cartucho Demo asomando */
 .consola__riel {
   position: relative;
   justify-self: center;
@@ -140,8 +204,8 @@
   bottom: 0;
   height: var(--consola-ranura-alto);
   border-radius: var(--radio-redondo);
-  background: var(--consola-ranura);
-  border: var(--tamano-trazo) solid var(--consola-borde);
+  background: var(--consola-ranura-fondo);
+  box-shadow: var(--consola-ranura-labio);
 }
 
 .consola__cartucho {
@@ -153,7 +217,10 @@
   width: var(--consola-cartucho-riel-ancho);
   height: 100%;
   border-radius: var(--radio-boceto) var(--radio-boceto) 0 0;
-  background: var(--consola-ui-acento-2);
+  background: var(--consola-cartucho-plastico);
+  box-shadow:
+    var(--consola-tecla-luz),
+    var(--consola-cartucho-sombra);
   color: var(--consola-control);
   font-weight: 500;
   opacity: 0;
@@ -168,7 +235,14 @@
   transform: translate(-50%, 0);
 }
 
-/* Pantalla */
+/* ---------- Pantalla hundida ---------- */
+.pantalla {
+  padding: var(--consola-pantalla-bisel-ancho);
+  background: var(--consola-pantalla-bisel);
+  border-radius: calc(var(--radio-pantalla) + var(--consola-pantalla-bisel-ancho));
+  box-shadow: var(--consola-pantalla-hundido);
+}
+
 .pantalla__vidrio {
   position: relative;
   aspect-ratio: 16 / 10;
@@ -182,6 +256,37 @@
   background-size: var(--consola-cuadricula-paso) var(--consola-cuadricula-paso);
   border: var(--tamano-borde) solid var(--consola-borde);
   border-radius: var(--radio-pantalla);
+}
+
+/* Capas estáticas del vidrio: líneas de escaneo y reflejo diagonal */
+.pantalla__vidrio::before,
+.pantalla__vidrio::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pantalla__vidrio::before {
+  background: var(--consola-escaneo);
+  opacity: var(--consola-escaneo-opacidad);
+}
+
+.pantalla__vidrio::after {
+  background: var(--consola-vidrio-reflejo);
+  opacity: var(--consola-vidrio-reflejo-opacidad);
+}
+
+/* Calentamiento: destello corto antes del boceto */
+.pantalla__calentamiento {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: var(--consola-calentamiento-luz);
+  opacity: 0;
+  pointer-events: none;
+  animation: consola-calentar var(--consola-calentamiento) ease-out both;
 }
 
 .pantalla__apagada {
@@ -206,7 +311,8 @@
   display: flex;
   justify-content: center;
   transform-origin: center;
-  animation: consola-crt var(--duracion-encendido) ease-out both;
+  animation: consola-crt var(--duracion-encendido) ease-out
+    var(--consola-calentamiento) both;
 }
 
 .marco {
@@ -309,7 +415,8 @@
 /* Boceto: solo trazos */
 .maqueta--boceto {
   opacity: 0;
-  animation: consola-boceto var(--duracion-encendido) linear both;
+  animation: consola-boceto var(--duracion-encendido) linear
+    var(--consola-calentamiento) both;
 }
 
 .maqueta--boceto span {
@@ -322,7 +429,8 @@
 
 /* Final: interfaz con color */
 .maqueta--final {
-  animation: consola-final var(--duracion-encendido) ease-out both;
+  animation: consola-final var(--duracion-encendido) ease-out
+    var(--consola-calentamiento) both;
 }
 
 .maqueta--final .maqueta__logo {
@@ -347,6 +455,82 @@
   border: var(--tamano-trazo) solid var(--consola-borde);
 }
 
+/* ---------- Piezas elevadas: teclas, controles y cruceta ---------- */
+.control,
+.tecla,
+.cruceta__brazo,
+.cruceta__centro {
+  position: relative;
+  isolation: isolate;
+  background: var(--consola-tecla-cara);
+  box-shadow: var(--consola-tecla-luz);
+  color: var(--consola-serigrafia);
+  border: var(--tamano-borde) solid var(--consola-contorno);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+/* Capas de luz: ::after = elevación (sombra exterior),
+   ::before = hundido. Al pulsar solo cambian su opacidad. */
+.control::before,
+.control::after,
+.tecla::before,
+.tecla::after,
+.cruceta__brazo::before,
+.cruceta__brazo::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: calc(var(--tamano-borde) * -1);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: opacity var(--duracion-corta) ease-out;
+}
+
+.control::after,
+.tecla::after,
+.cruceta__brazo::after {
+  box-shadow: var(--consola-tecla-elevacion);
+}
+
+.control::before,
+.tecla::before,
+.cruceta__brazo::before {
+  box-shadow: var(--consola-tecla-pulsada);
+  opacity: 0;
+}
+
+button.control,
+button.tecla,
+button.cruceta__brazo {
+  cursor: pointer;
+  transition: transform var(--duracion-corta) ease-out;
+}
+
+button:active:not([aria-disabled="true"]).control,
+button:active:not([aria-disabled="true"]).tecla,
+button:active:not([aria-disabled="true"]).cruceta__brazo {
+  transform: translateY(var(--consola-pulsado));
+}
+
+button:active:not([aria-disabled="true"]).control::after,
+button:active:not([aria-disabled="true"]).tecla::after,
+button:active:not([aria-disabled="true"]).cruceta__brazo::after {
+  opacity: 0;
+}
+
+button:active:not([aria-disabled="true"]).control::before,
+button:active:not([aria-disabled="true"]).tecla::before,
+button:active:not([aria-disabled="true"]).cruceta__brazo::before {
+  opacity: 1;
+}
+
+.control[aria-pressed="true"],
+.tecla[aria-pressed="true"] {
+  border-color: var(--consola-led-encendido);
+}
+
 /* Controles simplificados (menos de 1024 px): columna táctil */
 .controles {
   display: grid;
@@ -360,32 +544,13 @@
   align-items: center;
   gap: calc(var(--tamano-base) * 2);
   min-height: var(--tamano-tactil);
-  background: var(--consola-control);
-  color: var(--consola-etiqueta);
-  border: var(--tamano-borde) solid var(--consola-borde);
   border-radius: var(--radio-control);
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  cursor: pointer;
-  transition: transform var(--duracion-corta) ease-out;
 }
 
 .control {
   justify-content: space-between;
   padding-inline: var(--consola-espacio);
   font-size: var(--texto-cuerpo);
-}
-
-.control:active:not([aria-disabled="true"]),
-.tecla:active:not([aria-disabled="true"]),
-.cruceta__brazo:active:not([aria-disabled="true"]) {
-  transform: translateY(var(--consola-pulsado));
-}
-
-.control[aria-pressed="true"],
-.tecla[aria-pressed="true"] {
-  border-color: var(--consola-led-encendido);
 }
 
 .control__estado {
@@ -418,20 +583,6 @@
   display: grid;
   place-items: center;
   padding: 0;
-  background: var(--consola-control);
-  color: var(--consola-etiqueta);
-  border: var(--tamano-borde) solid var(--consola-borde);
-  font: inherit;
-}
-
-button.cruceta__brazo {
-  cursor: pointer;
-  transition: transform var(--duracion-corta) ease-out;
-}
-
-.cruceta__brazo--arriba,
-.cruceta__brazo--abajo {
-  color: var(--consola-borde);
 }
 
 .cruceta__brazo--arriba {
@@ -461,6 +612,7 @@ button.cruceta__brazo {
 .cruceta__centro {
   grid-area: 2 / 2;
   border: none;
+  box-shadow: none;
 }
 
 /* Perilla giratoria dibujada (decorativa) */
@@ -476,7 +628,10 @@ button.cruceta__brazo {
     var(--consola-perilla-brillo),
     var(--consola-control) 70%
   );
-  border: var(--tamano-borde) solid var(--consola-borde);
+  border: var(--tamano-borde) solid var(--consola-contorno);
+  box-shadow:
+    var(--consola-tecla-luz),
+    var(--consola-perilla-sombra);
   outline: var(--tamano-borde) dashed var(--consola-borde);
   outline-offset: var(--consola-perilla-marcas);
   transform: rotate(var(--consola-perilla-giro));
@@ -494,7 +649,7 @@ button.cruceta__brazo {
   transform: translateX(-50%);
 }
 
-/* Carcasa completa: desde 1024 px (breakpoint lg) */
+/* ---------- Carcasa completa: desde 1024 px (breakpoint lg) ---------- */
 @media (width >= 64rem) {
   .consola {
     display: grid;
@@ -562,6 +717,37 @@ button.cruceta__brazo {
   }
 }
 
+/* ---------- Animaciones (solo transform y opacity) ---------- */
+@keyframes consola-flotar {
+  from {
+    transform: translateY(calc(var(--consola-flotacion) * -1));
+  }
+  to {
+    transform: translateY(var(--consola-flotacion));
+  }
+}
+
+@keyframes consola-respirar {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes consola-calentar {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes consola-crt {
   0% {
     opacity: 0;
@@ -610,8 +796,9 @@ button.cruceta__brazo {
   }
 }
 
-/* Sin animaciones: se muestra directamente la interfaz final */
+/* Sin animaciones ni flotación: estados finales estáticos, mismos materiales */
 @media (prefers-reduced-motion: reduce) {
+  .consola,
   .consola *,
   .consola *::before,
   .consola *::after {

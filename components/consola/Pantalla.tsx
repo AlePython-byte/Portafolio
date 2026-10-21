@@ -42,6 +42,8 @@ export default function Pantalla({ encendida, cartucho, marco }: PantallaProps) 
         {estado}
       </p>
       <div className="pantalla__vidrio" aria-hidden="true">
+        {/* Calentamiento: destello breve al encender, antes del boceto */}
+        {encendida ? <span className="pantalla__calentamiento" /> : null}
         {encendida ? (
           <div className="pantalla__crt">
             {/* key: al cambiar de marco se vuelve a dibujar el boceto */}
