@@ -1,19 +1,46 @@
 /* Consola Boceta: solo usa tokens de app/globals.css.
-   Animaciones únicamente con transform y opacity. */
+   Animaciones únicamente con transform y opacity.
+   Base: versión simplificada (menos de 1024 px). La carcasa completa
+   (riel, tornillos, cruceta, perilla, teclas) aparece desde 64rem. */
 
 .consola {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--consola-espacio);
-  padding: var(--consola-relleno);
+  width: 100%;
+  max-width: var(--consola-ancho);
+  padding: var(--consola-relleno-movil);
   background: var(--consola-carcasa);
   border: var(--tamano-borde) solid var(--consola-borde);
-  border-radius: var(--radio-carcasa);
+  border-radius: var(--radio-pantalla);
+  box-shadow: var(--consola-sombra);
   color: var(--consola-etiqueta);
   font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
   font-size: var(--texto-etiqueta);
   letter-spacing: var(--interletra-etiqueta);
   text-transform: uppercase;
+}
+
+/* Piezas que solo existen en la carcasa completa */
+.consola__tornillo,
+.consola__riel,
+.consola__rejilla,
+.carcasa__izq,
+.carcasa__der,
+.carcasa__pie {
+  display: none;
+}
+
+/* Foco y estados comunes a todos los controles de la consola */
+.consola :focus-visible {
+  outline: var(--tamano-foco) solid var(--consola-foco);
+  outline-offset: var(--tamano-foco-separacion);
+}
+
+.consola [aria-disabled="true"] {
+  opacity: var(--consola-inactivo);
+  cursor: not-allowed;
 }
 
 /* Cabecera */
@@ -31,7 +58,7 @@
 
 .consola__rejilla {
   flex: 0 1 var(--consola-rejilla-ancho);
-  height: var(--consola-rejilla-paso);
+  height: calc(var(--consola-rejilla-paso) * 3);
   background-image: radial-gradient(
     circle,
     var(--consola-borde) 40%,
@@ -58,13 +85,101 @@
   background: var(--consola-led-encendido);
 }
 
+/* Tornillos */
+.consola__tornillo {
+  position: absolute;
+  width: var(--consola-tornillo-tamano);
+  height: var(--consola-tornillo-tamano);
+  border-radius: var(--radio-redondo);
+  background: var(--consola-tornillo);
+  border: var(--tamano-trazo) solid var(--consola-borde);
+}
+
+.consola__tornillo::after {
+  content: "";
+  position: absolute;
+  inset-inline: 20%;
+  top: 50%;
+  height: var(--tamano-trazo);
+  background: var(--consola-carcasa);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.consola__tornillo--si {
+  top: var(--consola-tornillo-margen);
+  left: var(--consola-tornillo-margen);
+}
+
+.consola__tornillo--sd {
+  top: var(--consola-tornillo-margen);
+  right: var(--consola-tornillo-margen);
+}
+
+.consola__tornillo--ii {
+  bottom: var(--consola-tornillo-margen);
+  left: var(--consola-tornillo-margen);
+}
+
+.consola__tornillo--id {
+  bottom: var(--consola-tornillo-margen);
+  right: var(--consola-tornillo-margen);
+}
+
+/* Ranura-riel superior con el cartucho Demo asomando */
+.consola__riel {
+  position: relative;
+  justify-self: center;
+  width: var(--consola-riel-ancho);
+  height: var(--consola-riel-alto);
+  margin-top: calc(var(--consola-riel-alto) * -0.5);
+}
+
+.consola__ranura {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: var(--consola-ranura-alto);
+  border-radius: var(--radio-redondo);
+  background: var(--consola-ranura);
+  border: var(--tamano-trazo) solid var(--consola-borde);
+}
+
+.consola__cartucho {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--consola-ranura-alto) / 2);
+  display: grid;
+  place-items: center;
+  width: var(--consola-cartucho-riel-ancho);
+  height: 100%;
+  border-radius: var(--radio-boceto) var(--radio-boceto) 0 0;
+  background: var(--consola-ui-acento-2);
+  color: var(--consola-control);
+  font-weight: 500;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition:
+    transform var(--duracion-corta) ease-out,
+    opacity var(--duracion-corta) ease-out;
+}
+
+.consola__cartucho[data-insertado="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
 /* Pantalla */
 .pantalla__vidrio {
   position: relative;
   aspect-ratio: 16 / 10;
   container-type: size;
   overflow: hidden;
-  background: var(--consola-pantalla);
+  /* Cuadrícula tipo papel de boceto */
+  background-color: var(--consola-pantalla);
+  background-image:
+    linear-gradient(var(--consola-cuadricula) var(--tamano-trazo), transparent var(--tamano-trazo)),
+    linear-gradient(90deg, var(--consola-cuadricula) var(--tamano-trazo), transparent var(--tamano-trazo));
+  background-size: var(--consola-cuadricula-paso) var(--consola-cuadricula-paso);
   border: var(--tamano-borde) solid var(--consola-borde);
   border-radius: var(--radio-pantalla);
 }
@@ -232,21 +347,19 @@
   border: var(--tamano-trazo) solid var(--consola-borde);
 }
 
-/* Controles */
+/* Controles simplificados (menos de 1024 px): columna táctil */
 .controles {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: calc(var(--consola-espacio) / 2);
 }
 
-.control {
+.control,
+.tecla {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: var(--tamano-base);
+  gap: calc(var(--tamano-base) * 2);
   min-height: var(--tamano-tactil);
-  padding: calc(var(--tamano-base) * 2);
   background: var(--consola-control);
   color: var(--consola-etiqueta);
   border: var(--tamano-borde) solid var(--consola-borde);
@@ -258,91 +371,194 @@
   transition: transform var(--duracion-corta) ease-out;
 }
 
-.control:active:not([aria-disabled="true"]) {
+.control {
+  justify-content: space-between;
+  padding-inline: var(--consola-espacio);
+  font-size: var(--texto-cuerpo);
+}
+
+.control:active:not([aria-disabled="true"]),
+.tecla:active:not([aria-disabled="true"]),
+.cruceta__brazo:active:not([aria-disabled="true"]) {
   transform: translateY(var(--consola-pulsado));
 }
 
-.control[aria-pressed="true"] {
+.control[aria-pressed="true"],
+.tecla[aria-pressed="true"] {
   border-color: var(--consola-led-encendido);
 }
 
-.control[aria-disabled="true"] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.control:focus-visible {
-  outline: var(--tamano-foco) solid var(--consola-foco);
-  outline-offset: var(--tamano-foco-separacion);
-}
-
 .control__estado {
+  margin-inline-start: auto;
   color: var(--consola-tenue);
 }
 
-.ranura {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: var(--consola-cartucho-ancho);
-  height: var(--consola-cartucho-alto);
-  overflow: hidden;
-  border-bottom: var(--tamano-borde) solid var(--consola-borde);
-}
-
-.cartucho {
-  width: 100%;
-  height: 100%;
-  border-radius: var(--radio-boceto) var(--radio-boceto) 0 0;
-  background: var(--consola-ui-acento-2);
-  color: var(--consola-control);
-  font-size: calc(var(--texto-etiqueta) * 0.75);
-  line-height: var(--consola-cartucho-alto);
-  text-align: center;
-  transform: translateY(0);
-  transition: transform var(--duracion-corta) ease-out;
-}
-
-.control[aria-pressed="true"] .cartucho {
-  transform: translateY(60%);
-}
-
 .controles__ayuda {
-  grid-column: 1 / -1;
   color: var(--consola-tenue);
   text-align: center;
   text-transform: none;
 }
 
-/* Móvil (< 768 px = breakpoint md): versión simplificada */
-@media (width < 48rem) {
+/* Teclas rectangulares de la carcasa completa */
+.tecla {
+  justify-content: center;
+  min-width: var(--consola-tecla-ancho);
+  padding-inline: calc(var(--tamano-base) * 2);
+}
+
+/* Cruceta: izquierda/derecha son botones; arriba/abajo, decorativos */
+.cruceta {
+  display: grid;
+  grid-template-columns: repeat(3, var(--consola-cruceta-brazo));
+  grid-template-rows: repeat(3, var(--consola-cruceta-brazo));
+}
+
+.cruceta__brazo,
+.cruceta__centro {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: var(--consola-control);
+  color: var(--consola-etiqueta);
+  border: var(--tamano-borde) solid var(--consola-borde);
+  font: inherit;
+}
+
+button.cruceta__brazo {
+  cursor: pointer;
+  transition: transform var(--duracion-corta) ease-out;
+}
+
+.cruceta__brazo--arriba,
+.cruceta__brazo--abajo {
+  color: var(--consola-borde);
+}
+
+.cruceta__brazo--arriba {
+  grid-area: 1 / 2;
+  border-bottom: none;
+  border-radius: var(--radio-control) var(--radio-control) 0 0;
+}
+
+.cruceta__brazo--abajo {
+  grid-area: 3 / 2;
+  border-top: none;
+  border-radius: 0 0 var(--radio-control) var(--radio-control);
+}
+
+.cruceta__brazo--izquierda {
+  grid-area: 2 / 1;
+  border-right: none;
+  border-radius: var(--radio-control) 0 0 var(--radio-control);
+}
+
+.cruceta__brazo--derecha {
+  grid-area: 2 / 3;
+  border-left: none;
+  border-radius: 0 var(--radio-control) var(--radio-control) 0;
+}
+
+.cruceta__centro {
+  grid-area: 2 / 2;
+  border: none;
+}
+
+/* Perilla giratoria dibujada (decorativa) */
+.perilla {
+  position: relative;
+  flex: none;
+  width: var(--consola-perilla);
+  height: var(--consola-perilla);
+  margin: var(--consola-perilla-marcas);
+  border-radius: var(--radio-redondo);
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--consola-perilla-brillo),
+    var(--consola-control) 70%
+  );
+  border: var(--tamano-borde) solid var(--consola-borde);
+  outline: var(--tamano-borde) dashed var(--consola-borde);
+  outline-offset: var(--consola-perilla-marcas);
+  transform: rotate(var(--consola-perilla-giro));
+}
+
+.perilla::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  width: calc(var(--tamano-borde) * 2);
+  height: 30%;
+  border-radius: var(--radio-redondo);
+  background: var(--consola-ui-acento-2);
+  transform: translateX(-50%);
+}
+
+/* Carcasa completa: desde 1024 px (breakpoint lg) */
+@media (width >= 64rem) {
   .consola {
-    padding: var(--consola-relleno-movil);
-    border-radius: var(--radio-pantalla);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "riel riel riel"
+      "cab cab cab"
+      "izq pantalla der"
+      "pie pie pie";
+    column-gap: var(--consola-columna-espacio);
+    row-gap: var(--consola-espacio);
+    padding: 0 var(--consola-relleno-lateral) var(--consola-relleno);
+    border-radius: var(--radio-carcasa);
   }
 
-  .consola__rejilla,
-  .ranura {
-    display: none;
+  .consola__tornillo,
+  .consola__riel {
+    display: block;
+  }
+
+  .consola__riel {
+    grid-area: riel;
+  }
+
+  .consola__cabecera {
+    grid-area: cab;
+  }
+
+  .consola__rejilla {
+    display: block;
+  }
+
+  .pantalla {
+    grid-area: pantalla;
+    align-self: center;
+  }
+
+  .carcasa__izq,
+  .carcasa__der {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--consola-espacio);
+  }
+
+  .carcasa__izq {
+    grid-area: izq;
+  }
+
+  .carcasa__der {
+    grid-area: der;
+  }
+
+  .carcasa__pie {
+    display: block;
+    grid-area: pie;
+    color: var(--consola-tenue);
+    text-align: center;
+    text-transform: none;
   }
 
   .controles {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .control {
-    flex-direction: row;
-    justify-content: space-between;
-    padding-inline: var(--consola-espacio);
-    font-size: var(--texto-cuerpo);
-  }
-
-  .control__estado {
-    margin-inline-start: auto;
-  }
-
-  .controles__ayuda {
-    font-size: var(--texto-etiqueta);
+    display: none;
   }
 }
 

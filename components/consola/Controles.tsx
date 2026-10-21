@@ -1,7 +1,9 @@
 import { useId, type KeyboardEvent } from "react";
+import { consolaCopy } from "@/data/hero";
+import { useLocalized } from "@/lib/localized";
 import type { Marco } from "./Consola";
 
-type ControlesProps = {
+export type ControlesProps = {
   encendida: boolean;
   onEncender: () => void;
   cartucho: boolean;
@@ -10,13 +12,24 @@ type ControlesProps = {
   onMarco: (marco: Marco) => void;
 };
 
-const MARCO_POR_FLECHA: Record<string, Marco> = {
+export const MARCO_POR_FLECHA: Record<string, Marco> = {
   ArrowLeft: "escritorio",
   ArrowUp: "escritorio",
   ArrowRight: "celular",
   ArrowDown: "celular",
 };
 
+export function manejarFlechas(
+  evento: KeyboardEvent<HTMLElement>,
+  onMarco: (marco: Marco) => void,
+) {
+  const destino = MARCO_POR_FLECHA[evento.key];
+  if (!destino) return;
+  evento.preventDefault();
+  onMarco(destino);
+}
+
+// Controles de la versión simplificada (menos de 1024 px).
 export default function Controles({
   encendida,
   onEncender,
@@ -25,14 +38,8 @@ export default function Controles({
   marco,
   onMarco,
 }: ControlesProps) {
+  const t = useLocalized();
   const ayudaId = useId();
-
-  function manejarTeclas(evento: KeyboardEvent<HTMLDivElement>) {
-    const destino = MARCO_POR_FLECHA[evento.key];
-    if (!destino) return;
-    evento.preventDefault();
-    onMarco(destino);
-  }
 
   function alternarMarco() {
     onMarco(marco === "escritorio" ? "celular" : "escritorio");
@@ -42,8 +49,8 @@ export default function Controles({
     <div
       className="controles"
       role="group"
-      aria-label="Controles de la consola"
-      onKeyDown={manejarTeclas}
+      aria-label={t(consolaCopy.controlsLabel)}
+      onKeyDown={(evento) => manejarFlechas(evento, onMarco)}
     >
       <button
         type="button"
@@ -52,7 +59,7 @@ export default function Controles({
         onClick={onEncender}
       >
         <span className="consola__led" data-encendido={encendida} aria-hidden="true" />
-        Encender
+        {t(consolaCopy.power)}
       </button>
 
       <button
@@ -61,12 +68,9 @@ export default function Controles({
         aria-pressed={cartucho}
         onClick={onCartucho}
       >
-        <span className="ranura" aria-hidden="true">
-          <span className="cartucho">Demo</span>
-        </span>
-        Cartucho Demo
+        {t(consolaCopy.cartridge)}
         <span className="control__estado" aria-hidden="true">
-          {cartucho ? "Insertado" : "Fuera"}
+          {t(cartucho ? consolaCopy.inserted : consolaCopy.out)}
         </span>
       </button>
 
@@ -78,14 +82,12 @@ export default function Controles({
         aria-keyshortcuts="ArrowLeft ArrowRight"
         onClick={cartucho ? alternarMarco : undefined}
       >
-        Marco
-        <span className="control__estado">{marco}</span>
+        {t(consolaCopy.frame)}
+        <span className="control__estado">{t(consolaCopy.frames[marco])}</span>
       </button>
 
       <p id={ayudaId} className="controles__ayuda">
-        {cartucho
-          ? "Flechas ← → cambian de marco"
-          : "Inserta el cartucho Demo para cambiar de marco"}
+        {t(cartucho ? consolaCopy.helpArrows : consolaCopy.helpInsert)}
       </p>
     </div>
   );

@@ -1,3 +1,5 @@
+import { consolaCopy } from "@/data/hero";
+import { useLocalized } from "@/lib/localized";
 import type { Marco } from "./Consola";
 
 type PantallaProps = {
@@ -28,9 +30,11 @@ function Maqueta({ variante }: { variante: "boceto" | "final" }) {
 }
 
 export default function Pantalla({ encendida, cartucho, marco }: PantallaProps) {
+  const t = useLocalized();
+  const nombreMarco = t(consolaCopy.frames[marco]);
   const estado = encendida
-    ? `Pantalla encendida: interfaz en marco ${marco}.`
-    : "Pantalla apagada.";
+    ? t(consolaCopy.screenOn).replace("{marco}", nombreMarco)
+    : t(consolaCopy.screenOff);
 
   return (
     <div className="pantalla">
@@ -47,10 +51,11 @@ export default function Pantalla({ encendida, cartucho, marco }: PantallaProps) 
             </div>
           </div>
         ) : (
-          <p className="pantalla__apagada">— sin señal —</p>
+          <p className="pantalla__apagada">{t(consolaCopy.noSignal)}</p>
         )}
         <span className="pantalla__etiqueta">
-          {cartucho ? "Demo" : "Sin cartucho"} · {marco}
+          {cartucho ? consolaCopy.cartridgeLabel : t(consolaCopy.noCartridge)} ·{" "}
+          {nombreMarco}
         </span>
       </div>
     </div>
