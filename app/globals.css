@@ -133,6 +133,7 @@
   --text-seccion: var(--texto-seccion);
   --text-seccion--line-height: 1.1;
   --radius-tarjeta: var(--radio-pantalla);
+  --radius-boceto: var(--radio-boceto);
   --radius-control: var(--radio-control);
   --radius-redondo: var(--radio-redondo);
   --font-sans: var(--font-space-grotesk);
