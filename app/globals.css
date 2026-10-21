@@ -20,6 +20,7 @@
   --tamano-base: 0.25rem;
   --tamano-tactil: 2.75rem; /* 44 px: objetivo táctil mínimo */
   --tamano-avatar: 6rem;
+  --tamano-foto: 12rem;
   --navbar-alto: calc(var(--tamano-tactil) + var(--tamano-base) * 4);
   --tamano-borde: 2px;
   --tamano-trazo: 1px;
@@ -32,6 +33,7 @@
   --texto-rol: 1.125rem;
   --texto-frase: clamp(1.25rem, 2.5vw, 1.625rem);
   --texto-titulo: clamp(2.75rem, 8vw, 5rem);
+  --texto-seccion: clamp(1.875rem, 4vw, 2.75rem);
   --interletra-etiqueta: 0.08em;
 
   --radio-boceto: 2px;
@@ -116,6 +118,7 @@
   --spacing: var(--tamano-base);
   --spacing-tactil: var(--tamano-tactil);
   --spacing-avatar: var(--tamano-avatar);
+  --spacing-foto: var(--tamano-foto);
   --spacing-navbar: var(--navbar-alto);
   --container-contenido: var(--ancho-contenido);
   --text-etiqueta: var(--texto-etiqueta);
@@ -125,6 +128,9 @@
   --text-frase--line-height: 1.3;
   --text-titulo: var(--texto-titulo);
   --text-titulo--line-height: 1;
+  --text-seccion: var(--texto-seccion);
+  --text-seccion--line-height: 1.1;
+  --radius-tarjeta: var(--radio-pantalla);
   --radius-control: var(--radio-control);
   --radius-redondo: var(--radio-redondo);
   --font-sans: var(--font-space-grotesk);
