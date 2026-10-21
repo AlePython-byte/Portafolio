@@ -1,19 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { LANGS, NAV_SECTIONS, translations, type Lang } from "@/lib/i18n";
-
-type Theme = "light" | "dark";
+import { LANGS, NAV_SECTIONS, translations } from "@/lib/i18n";
+import { setLang, setTheme, useLang, useTheme } from "@/lib/preferences";
 
 const MENU_ID = "menu-principal";
-
-function currentTheme(): Theme {
-  const explicit = document.documentElement.dataset.theme;
-  if (explicit === "light" || explicit === "dark") return explicit;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
 
 const linkClass =
   "inline-flex min-h-tactil items-center rounded-control px-3 text-cuerpo text-texto-suave hover:text-texto";
@@ -22,8 +13,8 @@ const controlClass =
   "inline-flex min-h-tactil min-w-tactil items-center justify-center rounded-control border border-borde px-3";
 
 export default function Navbar() {
-  const [theme, setTheme] = useState<Theme | null>(null);
-  const [lang, setLang] = useState<Lang>("es");
+  const theme = useTheme();
+  const lang = useLang();
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const t = translations[lang];
@@ -33,9 +24,14 @@ export default function Navbar() {
     menuButton.current?.focus({ preventScroll: true });
   }, []);
 
+  // El script de app/layout.tsx ya los puso antes de pintar; aquí se mantienen sincronizados.
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   useEffect(() => {
     if (!open) return;
@@ -56,9 +52,7 @@ export default function Navbar() {
   }, [open, closeMenu]);
 
   function toggleTheme() {
-    const next: Theme = currentTheme() === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    setTheme(next);
+    setTheme(theme === "dark" ? "light" : "dark");
   }
 
   function onLinkClick() {
@@ -137,8 +131,7 @@ export default function Navbar() {
                 aria-label={t.themeLabel}
                 className={`${controlClass} bg-fondo`}
               >
-                {t.theme}
-                {theme ? `: ${t.themeNames[theme]}` : ""}
+                {t.themeState[theme]}
               </button>
               <div role="group" aria-label={t.langLabel} className="flex gap-1">
                 {LANGS.map((l) => (

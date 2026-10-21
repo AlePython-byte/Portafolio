@@ -92,6 +92,7 @@
   --consola-maqueta-tarjeta: 22cqh;
 }
 
+/* Claro por defecto, sin importar el sistema: el oscuro solo con data-theme="dark" */
 :root[data-theme="dark"] {
   --color-fondo: var(--color-grafito-900);
   --color-superficie: var(--color-grafito-800);
@@ -101,20 +102,6 @@
   --color-acento: var(--color-lima-400);
   --color-acento-2: var(--color-ambar-400);
   --color-foco: var(--color-ambar-400);
-}
-
-/* Respaldo: preferencia del sistema cuando no hay data-theme explícito */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --color-fondo: var(--color-grafito-900);
-    --color-superficie: var(--color-grafito-800);
-    --color-borde: var(--color-grafito-500);
-    --color-texto: var(--color-crema-50);
-    --color-texto-suave: var(--color-grafito-100);
-    --color-acento: var(--color-lima-400);
-    --color-acento-2: var(--color-ambar-400);
-    --color-foco: var(--color-ambar-400);
-  }
 }
 
 @theme inline {

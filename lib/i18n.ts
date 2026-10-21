@@ -2,6 +2,10 @@ export type Lang = "es" | "en";
 
 export const LANGS: readonly Lang[] = ["es", "en"];
 
+export type Theme = "light" | "dark";
+
+export const THEMES: readonly Theme[] = ["light", "dark"];
+
 export const NAV_SECTIONS = [
   "about",
   "projects",
@@ -19,9 +23,8 @@ type Dictionary = {
   logoLabel: string;
   menuOpen: string;
   menuClose: string;
-  theme: string;
   themeLabel: string;
-  themeNames: { light: string; dark: string };
+  themeState: { light: string; dark: string };
   langLabel: string;
   nav: Record<NavSection, string>;
 };
@@ -33,9 +36,8 @@ export const translations: Record<Lang, Dictionary> = {
     logoLabel: "Alejandro, ir al inicio",
     menuOpen: "Abrir menú",
     menuClose: "Cerrar menú",
-    theme: "Tema",
     themeLabel: "Cambiar tema claro/oscuro",
-    themeNames: { light: "claro", dark: "oscuro" },
+    themeState: { light: "Tema: claro", dark: "Tema: oscuro" },
     langLabel: "Idioma",
     nav: {
       about: "Sobre mí",
@@ -52,9 +54,8 @@ export const translations: Record<Lang, Dictionary> = {
     logoLabel: "Alejandro, go to top",
     menuOpen: "Open menu",
     menuClose: "Close menu",
-    theme: "Theme",
     themeLabel: "Switch light/dark theme",
-    themeNames: { light: "light", dark: "dark" },
+    themeState: { light: "Theme: light", dark: "Theme: dark" },
     langLabel: "Language",
     nav: {
       about: "About",
