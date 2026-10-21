@@ -25,6 +25,7 @@ export const heroCopy: HeroCopy = {
 export type ConsolaCopy = {
   groupLabel: Localized;
   model: string;
+  madeIn: Localized;
   pwr: string;
   power: Localized;
   cartridge: Localized;
@@ -53,6 +54,7 @@ export type ConsolaCopy = {
 export const consolaCopy: ConsolaCopy = {
   groupLabel: { es: "Consola Boceta", en: "Boceta console" },
   model: "BOCETA · MOD. 01",
+  madeIn: { es: "Hecho en Pasto", en: "Made in Pasto" },
   pwr: "PWR",
   power: { es: "Encender", en: "Power" },
   cartridge: { es: "Cartucho Demo", en: "Demo cartridge" },
