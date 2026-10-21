@@ -15,6 +15,12 @@
   --color-rojo-600: #a8321f;
   --color-ambar-400: #ffb938;
   --color-ambar-600: #b86e00;
+  /* Azul "plano de arquitecto" y coral: dispositivos reloj y juego */
+  --color-azul-400: #8ab4f8;
+  --color-azul-600: #2a5da8;
+  --color-coral-400: #ff9f7a;
+  --color-coral-600: #c4532d;
+  --color-sombra: rgb(23 25 26 / 0.45); /* grafito-900 al 45 % */
 }
 
 /* Nivel 1: tamaños, radios y tiempos (primitivos) */
@@ -30,12 +36,15 @@
   --tamano-foco-separacion: 3px;
   --ancho-contenido: 72rem;
   --ancho-contenido-amplio: 90rem;
+  /* Hero en escritorio: texto 5/12, consola 7/12 */
+  --hero-columnas: minmax(0, 5fr) minmax(0, 7fr);
 
   --texto-etiqueta: 0.75rem;
   --texto-cuerpo: 1rem;
   --texto-rol: 1.125rem;
   --texto-frase: clamp(1.25rem, 2.5vw, 1.625rem);
   --texto-titulo: clamp(2.75rem, 8vw, 5rem);
+  --texto-titulo-compacto: clamp(2.75rem, 4.5vw, 4.5rem);
   --texto-seccion: clamp(1.875rem, 4vw, 2.75rem);
   --interletra-etiqueta: 0.08em;
 
@@ -61,6 +70,12 @@
   --color-sobre-acento: var(--color-grafito-900);
   --color-foco: var(--color-ambar-600);
   --color-error: var(--color-rojo-600);
+
+  /* Color de cartucho por tipo de dispositivo (aún sin usar) */
+  --cartucho-escritorio: var(--color-lima-600);
+  --cartucho-celular: var(--color-ambar-600);
+  --cartucho-reloj: var(--color-azul-600);
+  --cartucho-juego: var(--color-coral-600);
 }
 
 /* Nivel 3: tokens de componente */
@@ -87,8 +102,28 @@
   --consola-pulsado: 1px;
   --consola-rejilla-ancho: calc(var(--tamano-base) * 16);
   --consola-rejilla-paso: calc(var(--tamano-base) * 1.5);
-  --consola-cartucho-ancho: calc(var(--tamano-base) * 10);
-  --consola-cartucho-alto: calc(var(--tamano-base) * 5);
+  --consola-ancho: 50rem;
+  --consola-relleno-lateral: calc(var(--tamano-base) * 4);
+  --consola-columna-espacio: calc(var(--tamano-base) * 3);
+  --consola-sombra: 0 calc(var(--tamano-base) * 6) calc(var(--tamano-base) * 12)
+    calc(var(--tamano-base) * -4) var(--color-sombra);
+  --consola-tornillo: var(--color-grafito-500);
+  --consola-tornillo-tamano: calc(var(--tamano-base) * 3);
+  --consola-tornillo-margen: calc(var(--tamano-base) * 2.5);
+  --consola-ranura: var(--color-grafito-900);
+  --consola-ranura-alto: calc(var(--tamano-base) * 2);
+  --consola-riel-alto: calc(var(--tamano-base) * 8);
+  --consola-riel-ancho: 40%;
+  --consola-cartucho-riel-ancho: 45%;
+  --consola-cruceta-brazo: calc(var(--tamano-base) * 9); /* solo escritorio */
+  --consola-tecla-ancho: calc(var(--tamano-base) * 18);
+  --consola-perilla: calc(var(--tamano-base) * 12);
+  --consola-perilla-marcas: var(--tamano-base);
+  --consola-perilla-giro: 35deg;
+  --consola-perilla-brillo: var(--color-grafito-500);
+  --consola-inactivo: 0.5;
+  --consola-cuadricula: var(--color-grafito-800);
+  --consola-cuadricula-paso: calc(var(--tamano-base) * 4);
   /* Medidas de la maqueta relativas a la pantalla (container query units) */
   --consola-maqueta-margen: 6cqh;
   --consola-maqueta-espacio: 5cqh;
@@ -109,6 +144,10 @@
   --color-acento-2: var(--color-ambar-400);
   --color-foco: var(--color-ambar-400);
   --color-error: var(--color-rojo-400);
+  --cartucho-escritorio: var(--color-lima-400);
+  --cartucho-celular: var(--color-ambar-400);
+  --cartucho-reloj: var(--color-azul-400);
+  --cartucho-juego: var(--color-coral-400);
 }
 
 @theme inline {
@@ -135,6 +174,8 @@
   --text-frase--line-height: 1.3;
   --text-titulo: var(--texto-titulo);
   --text-titulo--line-height: 1;
+  --text-titulo-compacto: var(--texto-titulo-compacto);
+  --text-titulo-compacto--line-height: 1;
   --text-seccion: var(--texto-seccion);
   --text-seccion--line-height: 1.1;
   --radius-tarjeta: var(--radio-pantalla);
